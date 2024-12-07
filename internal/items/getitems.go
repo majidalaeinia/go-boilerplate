@@ -14,13 +14,13 @@ func (s *itemsServer) GetItems(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	rw.WriteHeader(http.StatusOK)
+	rw.Header().Set("Content-Type", "application/json")
+
 	err = json.NewEncoder(rw).Encode(items)
 	if err != nil {
 		slog.ErrorContext(r.Context(), "error encoding items", "error", err)
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	rw.Header().Set("Content-Type", "application/json")
-	rw.WriteHeader(http.StatusOK)
 }
