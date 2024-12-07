@@ -34,3 +34,28 @@ func (q *Queries) GetItem(ctx context.Context, db DBTX, id int32) (Item, error) 
 	err := row.Scan(&i.ID, &i.Name)
 	return i, err
 }
+
+const getItems = `-- name: GetItems :many
+select id, name
+from items
+`
+
+func (q *Queries) GetItems(ctx context.Context, db DBTX) ([]Item, error) {
+	rows, err := db.Query(ctx, getItems)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Item
+	for rows.Next() {
+		var i Item
+		if err := rows.Scan(&i.ID, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

@@ -12,7 +12,6 @@ func NewConnectionPool(ctx context.Context, connString string) (*pgxpool.Pool, e
 	if err != nil {
 		return pool, err
 	}
-	defer pool.Close()
 
 	err = pool.Ping(ctx)
 	if err != nil {

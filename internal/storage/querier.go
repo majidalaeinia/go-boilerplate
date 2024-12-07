@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	CreateItem(ctx context.Context, db DBTX, name string) (int32, error)
 	GetItem(ctx context.Context, db DBTX, id int32) (Item, error)
+	GetItems(ctx context.Context, db DBTX) ([]Item, error)
 }
 
 var _ Querier = (*Queries)(nil)

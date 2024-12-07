@@ -5,6 +5,8 @@ import (
 )
 
 type Config struct {
+	ServerAddr string
+
 	PostgresConn string
 	RedisConn    string
 }

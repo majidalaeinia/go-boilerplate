@@ -1,2 +1,3 @@
+serverAddr: ":8080"
 postgresConn: "postgresql://boilerplate_user:boilerplate_password@localhost:5432/boilerplate"
 redisConn: "redis://localhost:6379/0"

@@ -7,3 +7,7 @@ returning id;
 select *
 from items
 where id = @id;
+
+-- name: GetItems :many
+select *
+from items;
