@@ -1,7 +1,11 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/spf13/cobra"
+
+	"github.com/ehsundar/go-boilerplate/internal/storage"
 )
 
 func init() {
@@ -16,5 +20,22 @@ var serveCmd = &cobra.Command{
 }
 
 func serve() error {
+	ctx := context.Background()
+
+	config, err := LoadConfig()
+	if err != nil {
+		return err
+	}
+
+	_, err = storage.NewConnectionPool(ctx, config.PostgresConn)
+	if err != nil {
+		return err
+	}
+
+	_, err = storage.NewRedisClient(ctx, config.RedisConn)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
