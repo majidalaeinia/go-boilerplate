@@ -1,10 +1,20 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    queries: "query.sql"
-    schema: "schema.sql"
+    queries: "./internal/storage/"
+    schema: "./migrations/"
     gen:
       go:
-        package: "tutorial"
-        out: "tutorial"
+        out: "./internal/storage/"
+        emit_interface: true
+        emit_json_tags: true
+        emit_db_tags: true
+        emit_methods_with_db_argument: true
+        omit_unused_structs: true
         sql_package: "pgx/v5"
+        query_parameter_limit: 4
+    rules:
+      - sqlc/db-prepare
+      - postgresql-query-too-costly
+    analyzer:
+      database: false
