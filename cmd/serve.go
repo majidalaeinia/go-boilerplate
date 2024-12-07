@@ -62,9 +62,9 @@ func serve() error {
 	registerRoutes(mux, itemsServer)
 
 	go func() {
-		slog.Info("Starting server on %s", config.ServerAddr)
+		slog.Info("Starting server", "address", config.ServerAddr)
 		if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-			slog.Error("HTTP server error: %v", err)
+			slog.Error("HTTP server error", "error", err)
 		}
 		slog.Info("Stopped serving new connections")
 	}()

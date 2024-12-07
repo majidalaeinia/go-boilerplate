@@ -1,0 +1,13 @@
+linters:
+  fast: true
+
+output:
+  formats:
+    - format: colored-line-number
+  show-stats: true
+  sort-results: true
+
+run:
+  concurrency: 16
+  go: "1.23"
+  tests: false
