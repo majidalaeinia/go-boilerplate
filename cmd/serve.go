@@ -8,6 +8,7 @@ import (
 	"errors"
 	"github.com/ehsundar/go-boilerplate/internal/items"
 	"github.com/ehsundar/go-boilerplate/internal/storage"
+	"github.com/ehsundar/go-boilerplate/internal/users"
 	"log/slog"
 	"net"
 	"net/http"
@@ -50,6 +51,7 @@ func serve() error {
 	querier := storage.New()
 
 	itemsServer := items.NewItemsServer(pool, querier)
+	usersServer := users.NewUsersServer(pool, querier)
 
 	mux := http.NewServeMux()
 
@@ -59,7 +61,8 @@ func serve() error {
 		BaseContext: func(listener net.Listener) context.Context { return ctx },
 	}
 
-	registerRoutes(mux, itemsServer)
+	registerItemsRoutes(mux, itemsServer)
+	registerUsersRoutes(mux, usersServer)
 
 	go func() {
 		slog.Info("Starting server", "address", config.ServerAddr)
@@ -80,6 +83,10 @@ func serve() error {
 	return server.Shutdown(shutdownCtx)
 }
 
-func registerRoutes(mux *http.ServeMux, itemsServer items.ItemsServer) {
+func registerItemsRoutes(mux *http.ServeMux, itemsServer items.ItemsServer) {
 	mux.HandleFunc("/items", itemsServer.GetItems)
+}
+
+func registerUsersRoutes(mux *http.ServeMux, usersServer users.UsersServer) {
+	mux.HandleFunc("/users", usersServer.GetUsers)
 }
